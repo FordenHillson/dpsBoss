@@ -1,0 +1,86 @@
+[
+  {
+    "id": "bossAtk30",
+    "name": "Boss Atk food 30%",
+    "stat": 30,
+    "icon": "/buffs/icons/bossAtk30.png"
+  },
+  {
+    "id": "bossAtk50",
+    "name": "Boss Atk food 50%",
+    "stat": 50,
+    "icon": "/buffs/icons/bossAtk50.png"
+  },
+  {
+    "id": "physAtk30",
+    "name": "Phys/MA Atk food 30%",
+    "stat": 30,
+    "icon": "/buffs/icons/physAtk30.png"
+  },
+  {
+    "id": "physAtk50",
+    "name": "Phys/MA Atk food 50%",
+    "stat": 50,
+    "icon": "/buffs/icons/physAtk50.png"
+  },
+  {
+    "id": "candyBasket",
+    "name": "Candy Basket / Cane",
+    "stat": 30,
+    "icon": "/buffs/icons/candyBasket.png"
+  },
+  {
+    "id": "chestnut",
+    "name": "Chestnut",
+    "stat": 30,
+    "icon": "/buffs/icons/chestnut.png"
+  },
+  {
+    "id": "carrotJuice",
+    "name": "Carrot Juice",
+    "stat": 30,
+    "icon": "/buffs/icons/carrotJuice.png"
+  },
+  {
+    "id": "noodleSoup",
+    "name": "Noodle Soup",
+    "stat": 20,
+    "icon": "/buffs/icons/noodleSoup.png"
+  },
+  {
+    "id": "jellyfish",
+    "name": "Jellyfish",
+    "stat": 20,
+    "icon": "/buffs/icons/jellyfish.png"
+  },
+  {
+    "id": "porkSnail",
+    "name": "Pork / Snail",
+    "stat": 20,
+    "icon": "/buffs/icons/porkSnail.png"
+  },
+  {
+    "id": "bossRush",
+    "name": "Boss Rush",
+    "stat": 50,
+    "icon": "/buffs/icons/bossRush.png"
+  },
+  {
+    "id": "fever",
+    "name": "Fever (maxed)",
+    "stat": 0,
+    "icon": "/buffs/icons/fever.png"
+  },
+  {
+    "id": "nodeIed",
+    "name": "Node IED (skill node Lv.40+)",
+    "stat": 15,
+    "icon": "/buffs/icons/nodeIed.png"
+  },
+  {
+    "id": "defenseSmash4",
+    "name": "Node Defense Smash 4",
+    "stat": 25,
+    "icon": "/buffs/icons/defenseSmash4.png"
+  }
+]

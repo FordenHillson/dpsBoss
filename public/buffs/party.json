@@ -1,0 +1,44 @@
+[
+  {
+    "id": "advanceBlessing",
+    "name": "Advance Blessing",
+    "stat": 35,
+    "icon": "/buffs/icons/advanceBlessing.png"
+  },
+  {
+    "id": "speedInfusion",
+    "name": "Speed Infusion",
+    "stat": 10,
+    "icon": "/buffs/icons/speedInfusion.png"
+  },
+  {
+    "id": "unmanagedAnger",
+    "name": "Unmanaged Anger",
+    "stat": 21,
+    "icon": "/buffs/icons/unmanagedAnger.png"
+  },
+  {
+    "id": "combatOrders",
+    "name": "Combat Orders",
+    "stat": 15,
+    "icon": "/buffs/icons/combatOrders.png"
+  },
+  {
+    "id": "callOfTheWild",
+    "name": "Call of the Wild",
+    "stat": 15,
+    "icon": "/buffs/icons/callOfTheWild.png"
+  },
+  {
+    "id": "evanBuff",
+    "name": "Evan buff",
+    "stat": 15,
+    "icon": "/buffs/icons/evanBuff.png"
+  },
+  {
+    "id": "lv200Buff",
+    "name": "Lv 200 buff",
+    "stat": 30,
+    "icon": "/buffs/icons/lv200Buff.png"
+  }
+]
