@@ -1,4 +1,4 @@
-/** Divine Echo (Bishop) — special buff, not a party toggle list item. */
+/** Divine Echo (Paladin) — special buff, not a party toggle list item. */
 
 export const DIVINE_ECHO_ADDITIONAL_DMG = 90
 export const DIVINE_ECHO_FD_BASE = 10
