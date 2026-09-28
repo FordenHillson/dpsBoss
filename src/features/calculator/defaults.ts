@@ -14,6 +14,9 @@ export const DEFAULT_INPUT: CalculatorInput = {
   skillPercent: 500,
   monsterLevel: 250,
   bossPdrPercent: 300,
+  critResPercent: 0,
+  skillPhyMagDmg10: false,
+  skillIed15: false,
 }
 
 export function formatDamage(n: number): string {

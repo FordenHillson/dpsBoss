@@ -14,6 +14,10 @@ import {
 import { useMemo, useState } from 'react'
 import { useColorMode } from './ColorModeProvider'
 import {
+  DEFAULT_AF_SC_SELECTION,
+  type AfScSelection,
+} from './domain/afScBonus'
+import {
   computeBuffedStats,
   toBuffedCalculatorInput,
 } from './domain/buffedStats'
@@ -23,15 +27,20 @@ import {
   DEFAULT_PARTY_BUFFS,
   type PartyBuffSelection,
 } from './domain/partyBuffs'
+import {
+  DEFAULT_SPECIAL_BUFFS,
+  type SpecialBuffSelection,
+} from './domain/specialBuffs'
 import type { CalculatorInput, CapturedStats } from './domain/types'
 import { BuffedStatsPanel } from './features/calculator/BuffedStatsPanel'
 import { DEFAULT_INPUT } from './features/calculator/defaults'
 import { FoodBuffGrid } from './features/calculator/FoodBuffGrid'
-import { HyperSkillFields } from './features/calculator/HyperSkillFields'
 import { PartyBuffGrid } from './features/calculator/PartyBuffGrid'
 import { ResultPanel } from './features/calculator/ResultPanel'
+import { SpecialBuffGrid } from './features/calculator/SpecialBuffGrid'
 import { StatCapturePanel } from './features/calculator/StatCapturePanel'
 import { StatForm } from './features/calculator/StatForm'
+import { useAfScBonusCatalog } from './features/calculator/useAfScBonusCatalog'
 
 interface ToastState {
   open: boolean
@@ -56,10 +65,15 @@ const tileFitSx = {
 
 export default function App() {
   const { mode, toggleColorMode } = useColorMode()
+  const { catalog: afScCatalog } = useAfScBonusCatalog()
   const [base, setBase] = useState<CalculatorInput>(DEFAULT_INPUT)
   const [food, setFood] = useState<FoodBuffSelection>(DEFAULT_FOOD_BUFFS)
   const [party, setParty] = useState<PartyBuffSelection>(DEFAULT_PARTY_BUFFS)
+  const [special, setSpecial] = useState<SpecialBuffSelection>(
+    DEFAULT_SPECIAL_BUFFS,
+  )
   const [hyper, setHyper] = useState<HyperSkill>(DEFAULT_HYPER_SKILL)
+  const [afSc, setAfSc] = useState<AfScSelection>(DEFAULT_AF_SC_SELECTION)
   const [toast, setToast] = useState<ToastState>({
     open: false,
     message: '',
@@ -78,8 +92,9 @@ export default function App() {
   }
 
   const buffed = useMemo(
-    () => computeBuffedStats(base, food, hyper, party),
-    [base, food, hyper, party],
+    () =>
+      computeBuffedStats(base, food, hyper, party, special, afScCatalog, afSc),
+    [base, food, hyper, party, special, afScCatalog, afSc],
   )
   const damageInput = useMemo(
     () => toBuffedCalculatorInput(base, buffed),
@@ -199,13 +214,10 @@ export default function App() {
               <BuffedStatsPanel buffed={buffed} compact />
             </Paper>
             <Paper sx={tileFitSx}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                <HyperSkillFields value={hyper} onChange={setHyper} />
-                <StatCapturePanel
-                  onApply={handleApplySnapshot}
-                  onNotify={notify}
-                />
-              </Box>
+              <StatCapturePanel
+                onApply={handleApplySnapshot}
+                onNotify={notify}
+              />
             </Paper>
           </Box>
 
@@ -216,7 +228,15 @@ export default function App() {
               gridRow: { md: '2' },
             }}
           >
-            <StatForm value={base} onChange={setBase} compact />
+            <StatForm
+              value={base}
+              onChange={setBase}
+              hyper={hyper}
+              onChangeHyper={setHyper}
+              afSc={afSc}
+              onChangeAfSc={setAfSc}
+              compact
+            />
           </Paper>
 
           <Paper
@@ -231,6 +251,11 @@ export default function App() {
           >
             <FoodBuffGrid value={food} onChange={setFood} />
             <PartyBuffGrid value={party} onChange={setParty} />
+            <SpecialBuffGrid
+              value={special}
+              onChange={setSpecial}
+              flatAtk={base.atk}
+            />
           </Paper>
         </Box>
       </Box>

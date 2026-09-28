@@ -15,7 +15,14 @@ export interface CapturedStats {
 export interface ManualStats {
   skillPercent: number
   monsterLevel: number
+  /** Boss DEF / PDR % (sheet Boss IED / PDR). */
   bossPdrPercent: number
+  /** Monster Crit Res % — subtracts from Crit Rate (sheet B25). */
+  critResPercent: number
+  /** Skill node: Phy/Mag DMG +10% */
+  skillPhyMagDmg10: boolean
+  /** Skill node: multiplicative IED +15% */
+  skillIed15: boolean
 }
 
 export type CalculatorInput = CapturedStats & ManualStats

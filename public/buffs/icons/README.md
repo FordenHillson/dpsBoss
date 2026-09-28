@@ -16,12 +16,15 @@
 }
 ```
 
-ตอนนี้ Food มี `.png` ครบแล้ว — Party ยังขาดไฟล์ ให้วาง:
+## Party icons
 
-- `advanceBlessing.png`
-- `speedInfusion.png`
-- `unmanagedAnger.png`
-- `combatOrders.png`
-- `callOfTheWild.png`
-- `evanBuff.png`
-- `lv200Buff.png`
+| id | ไฟล์ |
+|---|---|
+| advanceBlessing | `advanceBlessing.png` |
+| speedInfusion | `speedInfusion.png` |
+| combatOrders | `combatOrders.png` |
+| callOfTheWild | `callOfTheWild.png` |
+| evanBuff | `evanBuff.png` |
+| lv200Buff | `lv200Buff.png` |
+| unmanagedAnger | ยังขาด — วาง `unmanagedAnger.png` |
+| divineEcho | `divineEcho.png` (Special) |

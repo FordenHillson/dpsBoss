@@ -46,6 +46,9 @@ describe('parseStatSnapshot', () => {
       skillPercent: 500,
       monsterLevel: 250,
       bossPdrPercent: 300,
+      critResPercent: 0,
+      skillPhyMagDmg10: false,
+      skillIed15: false,
     }
     const next = applySnapshot(current, { atk: 999 })
     expect(next.atk).toBe(999)

@@ -1,18 +1,18 @@
 import { useState } from 'react'
-import { Box, Checkbox, Tooltip } from '@mui/material'
+import { Box, Checkbox, Typography } from '@mui/material'
+import { publicUrl } from '../../data/publicUrl'
+import { styleUi } from '../../theme'
 
-/** Fixed size so Food / Party cards share the same scale. */
-export const BUFF_CARD_SIZE = 76
-export const BUFF_ICON_SIZE = 60
+export const BUFF_ICON_SIZE = 40
 
 interface BuffToggleCardProps {
   label: string
   abbr: string
+  /** Human-readable buff effect, e.g. "+30%" */
+  statLabel: string
   checked: boolean
   onToggle: () => void
   accent?: 'primary' | 'secondary'
-  /** Badge number; omit or 0 to hide */
-  badge?: string | number
   /** Image URL from buff JSON, e.g. /buffs/icons/candyBasket.png */
   iconUrl?: string
 }
@@ -20,14 +20,13 @@ interface BuffToggleCardProps {
 export function BuffToggleCard({
   label,
   abbr,
+  statLabel,
   checked,
   onToggle,
   accent = 'primary',
-  badge,
   iconUrl,
 }: BuffToggleCardProps) {
   const [imgFailed, setImgFailed] = useState(false)
-  const showBadge = badge != null && badge !== 0 && badge !== '0'
   const showImg = Boolean(iconUrl) && !imgFailed
 
   const borderChecked =
@@ -36,105 +35,148 @@ export function BuffToggleCard({
     accent === 'secondary' ? 'secondary.light' : 'primary.light'
 
   return (
-    <Tooltip title={label} enterDelay={400}>
-      <Box
-        component="button"
-        type="button"
-        onClick={onToggle}
-        aria-pressed={checked}
-        aria-label={label}
-        sx={{
-          width: BUFF_CARD_SIZE,
-          flex: '0 0 auto',
+    <Box
+      component="button"
+      type="button"
+      onClick={onToggle}
+      aria-pressed={checked}
+      aria-label={label}
+      sx={(t) => {
+        const dark = t.palette.mode === 'dark'
+        const idleBg = dark ? 'rgba(255, 255, 255, 0.06)' : styleUi.gray[100]
+        const hoverBg = dark ? 'rgba(255, 255, 255, 0.1)' : styleUi.gray[200]
+        const selectedBg = t.palette.action.selected
+        return {
+          width: '100%',
           m: 0,
-          p: 0.75,
+          py: 0.75,
+          px: 1,
           cursor: 'pointer',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           alignItems: 'center',
-          gap: 0.5,
+          gap: 1,
+          textAlign: 'left',
           borderRadius: 1,
           border: 1,
-          borderColor: checked ? borderChecked : 'divider',
-          bgcolor: checked ? 'action.selected' : 'background.paper',
+          borderColor: checked
+            ? borderChecked
+            : dark
+              ? styleUi.gray[600]
+              : styleUi.gray[300],
+          bgcolor: checked ? selectedBg : idleBg,
           boxShadow: 'none',
           font: 'inherit',
           color: 'inherit',
-          transition: (t) =>
-            t.transitions.create(['border-color', 'background-color'], {
-              duration: t.transitions.duration.shorter,
-            }),
+          transition: t.transitions.create(
+            ['border-color', 'background-color'],
+            { duration: t.transitions.duration.shorter },
+          ),
           '&:hover': {
-            borderColor: checked ? borderChecked : borderHover,
-            bgcolor: checked ? 'action.selected' : 'action.hover',
+            borderColor: checked
+              ? borderChecked
+              : dark
+                ? styleUi.gray[300]
+                : borderHover,
+            bgcolor: checked ? selectedBg : hoverBg,
           },
+        }
+      }}
+    >
+      <Box
+        sx={(t) => ({
+          width: BUFF_ICON_SIZE,
+          height: BUFF_ICON_SIZE,
+          flex: '0 0 auto',
+          borderRadius: 1,
+          bgcolor:
+            t.palette.mode === 'dark'
+              ? 'rgba(0, 0, 0, 0.28)'
+              : styleUi.gray[200],
+          color: 'text.secondary',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          typography: 'caption',
+          fontWeight: 700,
+          fontSize: 10,
+          textAlign: 'center',
+          lineHeight: 1.1,
+          px: 0.25,
+          overflow: 'hidden',
+        })}
+      >
+        {showImg ? (
+          <Box
+            component="img"
+            key={iconUrl}
+            src={iconUrl ? publicUrl(iconUrl) : undefined}
+            alt=""
+            onError={() => setImgFailed(true)}
+            sx={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        ) : (
+          abbr
+        )}
+      </Box>
+
+      <Box
+        sx={{
+          flex: '1 1 auto',
+          minWidth: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 0.35,
         }}
       >
-        <Box
+        <Typography
+          variant="body2"
           sx={{
-            width: BUFF_ICON_SIZE,
-            height: BUFF_ICON_SIZE,
-            borderRadius: 1,
-            bgcolor: 'background.default',
-            color: 'text.secondary',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            typography: 'caption',
-            fontWeight: 700,
-            fontSize: 12,
-            textAlign: 'center',
-            lineHeight: 1.15,
-            px: 0.5,
-            position: 'relative',
+            fontWeight: 600,
+            fontSize: 13,
+            lineHeight: 1.2,
             overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
-          {showImg ? (
-            <Box
-              component="img"
-              key={iconUrl}
-              src={iconUrl}
-              alt=""
-              onError={() => setImgFailed(true)}
-              sx={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
-          ) : (
-            abbr
-          )}
-          {showBadge ? (
-            <Box
-              sx={{
-                position: 'absolute',
-                right: 2,
-                bottom: 2,
-                px: 0.5,
-                borderRadius: 0.5,
-                bgcolor: 'text.primary',
-                color: 'background.paper',
-                fontSize: 9,
-                fontWeight: 700,
-                lineHeight: 1.35,
-              }}
-            >
-              {badge}
-            </Box>
-          ) : null}
+          {label}
+        </Typography>
+        <Box
+          sx={{
+            alignSelf: 'flex-start',
+            px: 0.75,
+            py: 0.15,
+            borderRadius: 0.75,
+            bgcolor: styleUi.yellow[200],
+            color: styleUi.yellow[700],
+            typography: 'caption',
+            fontWeight: 700,
+            fontSize: 11,
+            lineHeight: 1.4,
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {statLabel}
         </Box>
-        <Checkbox
-          size="small"
-          checked={checked}
-          tabIndex={-1}
-          disableRipple
-          color={accent}
-          sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 18 } }}
-        />
       </Box>
-    </Tooltip>
+
+      <Checkbox
+        size="small"
+        checked={checked}
+        tabIndex={-1}
+        disableRipple
+        color={accent}
+        sx={{ p: 0, flex: '0 0 auto', '& .MuiSvgIcon-root': { fontSize: 20 } }}
+      />
+    </Box>
   )
 }

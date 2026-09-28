@@ -11,7 +11,7 @@ import type { CalculatorInput } from './types'
 
 /**
  * Snapshot from Google Sheet Damage Calculator
- * (Node IED=1, DS4=1, no food/party/hyper).
+ * (skill IED 15% + DS4, no food/party/hyper).
  * B18 DIR 44.8%, B14 PDR 50%, B11/B12 lv 258/200.
  */
 const sheetSampleBase: CalculatorInput = {
@@ -28,12 +28,14 @@ const sheetSampleBase: CalculatorInput = {
   skillPercent: 256,
   monsterLevel: 200,
   bossPdrPercent: 50,
+  critResPercent: 0,
+  skillPhyMagDmg10: false,
+  skillIed15: true,
 }
 
 describe('sheet parity (Damage Calculator sample)', () => {
   const food = {
     ...DEFAULT_FOOD_BUFFS,
-    nodeIed: true,
     defenseSmash4: true,
   }
   const buffed = computeBuffedStats(
@@ -46,7 +48,7 @@ describe('sheet parity (Damage Calculator sample)', () => {
     toBuffedCalculatorInput(sheetSampleBase, buffed),
   )
 
-  it('Total DIR matches B16 with Node 15% + DS4 25%', () => {
+  it('Total DIR matches B16 with IED 15% + DS4 25%', () => {
     expect(buffed.iedPercent).toBeCloseTo(64.81, 5)
   })
 

@@ -17,7 +17,7 @@ _Avoid_: OCR result, import blob
 _Avoid_: auto field, OCR field
 
 **Manual Field**:
-ฟิลด์ที่ผู้ใช้กรอกเองและไม่ถูกทับตอน Apply Snapshot (`skillPercent`, `monsterLevel`, `bossPdrPercent`)
+ฟิลด์ที่ผู้ใช้กรอกเองและไม่ถูกทับตอน Apply Snapshot (`skillPercent`, Hyper skill, `skillPhyMagDmg10`, `skillIed15`, `monsterLevel`, `bossPdrPercent` / DEF%, `critResPercent`, AF/SC Bonus)
 _Avoid_: custom field
 
 **Level Modifier**:

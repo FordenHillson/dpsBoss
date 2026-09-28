@@ -46,10 +46,40 @@ const shared: ThemeOptions = {
   spacing: 8,
   components: {
     MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          transition: 'background-color 200ms ease, color 200ms ease',
-        },
+      styleOverrides: (theme) => {
+        const dark = theme.palette.mode === 'dark'
+        const thumb = dark ? styleUi.gray[600] : styleUi.gray[300]
+        const thumbHover = dark ? styleUi.gray[300] : styleUi.gray[600]
+        const track = dark ? 'rgba(0, 0, 0, 0.25)' : styleUi.gray[100]
+        return {
+          body: {
+            transition: 'background-color 200ms ease, color 200ms ease',
+          },
+          /* Style UI–toned scrollbars (WebKit + Firefox) */
+          '*': {
+            scrollbarWidth: 'thin',
+            scrollbarColor: `${thumb} ${track}`,
+          },
+          '*::-webkit-scrollbar': {
+            width: 8,
+            height: 8,
+          },
+          '*::-webkit-scrollbar-track': {
+            background: track,
+            borderRadius: 4,
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: thumb,
+            borderRadius: 4,
+            border: '2px solid transparent',
+            backgroundClip: 'content-box',
+          },
+          '*::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: thumbHover,
+            border: '1px solid transparent',
+            backgroundClip: 'content-box',
+          },
+        }
       },
     },
     MuiPaper: {

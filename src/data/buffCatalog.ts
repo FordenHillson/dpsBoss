@@ -1,3 +1,5 @@
+import { publicUrl } from './publicUrl'
+
 /** Display catalog entry loaded from /buffs/*.json */
 export interface BuffCatalogItem {
   id: string
@@ -14,7 +16,7 @@ let foodPromise: Promise<BuffCatalogItem[]> | null = null
 let partyPromise: Promise<BuffCatalogItem[]> | null = null
 
 async function fetchCatalog(url: string): Promise<BuffCatalogItem[]> {
-  const res = await fetch(url)
+  const res = await fetch(publicUrl(url))
   if (!res.ok) {
     throw new Error(`โหลด buff catalog ไม่สำเร็จ: ${url}`)
   }

@@ -38,6 +38,10 @@ export function BuffedStatsPanel({
     { label: 'Final Dmg %', value: pct(buffed.finalDmgPercent) },
     { label: 'IED / DIR %', value: pct(buffed.iedPercent) },
     {
+      label: 'Max Dmg',
+      value: buffed.maxDmg.toLocaleString('en-US'),
+    },
+    {
       label: 'Level modifier',
       value: formatPercentFraction(buffed.levelModifier),
       muted: true,

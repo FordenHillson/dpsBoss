@@ -19,6 +19,9 @@ const base: CalculatorInput = {
   skillPercent: 500,
   monsterLevel: 1,
   bossPdrPercent: 20,
+  critResPercent: 0,
+  skillPhyMagDmg10: false,
+  skillIed15: false,
 }
 
 describe('food exclusive picks', () => {
@@ -69,30 +72,38 @@ describe('computeBuffedStats', () => {
     expect(buffed.iedPercent).toBeCloseTo(58.75, 5)
   })
 
-  it('stacks Node IED as multiplicative +15% IED', () => {
-    const food = { ...DEFAULT_FOOD_BUFFS, nodeIed: true }
+  it('stacks skill IED 15% as multiplicative IED', () => {
     const buffed = computeBuffedStats(
-      base,
-      food,
+      { ...base, skillIed15: true },
+      DEFAULT_FOOD_BUFFS,
       DEFAULT_HYPER_SKILL,
       DEFAULT_PARTY_BUFFS,
     )
     expect(buffed.iedPercent).toBeCloseTo(53.25, 5)
   })
 
-  it('stacks Node IED then DS4 multiplicatively', () => {
+  it('stacks skill IED 15% then DS4 multiplicatively', () => {
     const food = {
       ...DEFAULT_FOOD_BUFFS,
-      nodeIed: true,
       defenseSmash4: true,
     }
     const buffed = computeBuffedStats(
-      base,
+      { ...base, skillIed15: true },
       food,
       DEFAULT_HYPER_SKILL,
       DEFAULT_PARTY_BUFFS,
     )
     expect(buffed.iedPercent).toBeCloseTo(64.9375, 5)
+  })
+
+  it('adds skill Phy/Mag DMG 10%', () => {
+    const buffed = computeBuffedStats(
+      { ...base, skillPhyMagDmg10: true },
+      DEFAULT_FOOD_BUFFS,
+      DEFAULT_HYPER_SKILL,
+      DEFAULT_PARTY_BUFFS,
+    )
+    expect(buffed.dmgPercent).toBeCloseTo(191.3 + 10, 5)
   })
 
   it('applies party buffs from sheet coefficients', () => {
@@ -112,5 +123,28 @@ describe('computeBuffedStats', () => {
     expect(buffed.bossPercent).toBeCloseTo(253.4 + 15, 5)
     expect(buffed.dmgPercent).toBeCloseTo(191.3 + 15, 5)
     expect(buffed.critDmgPercent).toBeCloseTo(533.2 + 30, 5)
+  })
+
+  it('applies Divine Echo Additional DMG and scaled Final DMG', () => {
+    const buffed = computeBuffedStats(
+      base,
+      DEFAULT_FOOD_BUFFS,
+      DEFAULT_HYPER_SKILL,
+      DEFAULT_PARTY_BUFFS,
+      { divineEcho: true },
+    )
+    // flat ATK 73562 → floor(73562/3000)=24 → capped scale 20 → FD +30
+    expect(buffed.dmgPercent).toBeCloseTo(191.3 + 90, 5)
+    expect(buffed.finalDmgPercent).toBeCloseTo(93 + 30, 5)
+  })
+
+  it('subtracts Crit Res from Crit Rate', () => {
+    const buffed = computeBuffedStats(
+      { ...base, critResPercent: 20 },
+      DEFAULT_FOOD_BUFFS,
+      DEFAULT_HYPER_SKILL,
+      DEFAULT_PARTY_BUFFS,
+    )
+    expect(buffed.critRatePercent).toBeCloseTo(189.5 - 20, 5)
   })
 })

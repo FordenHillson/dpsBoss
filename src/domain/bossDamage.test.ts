@@ -19,6 +19,9 @@ const sample: CalculatorInput = {
   skillPercent: 500,
   monsterLevel: 1,
   bossPdrPercent: 20,
+  critResPercent: 0,
+  skillPhyMagDmg10: false,
+  skillIed15: false,
 }
 
 describe('normalizeStats', () => {

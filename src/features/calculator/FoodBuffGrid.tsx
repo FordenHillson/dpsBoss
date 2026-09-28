@@ -1,10 +1,12 @@
 import { Box, Typography } from '@mui/material'
 import {
+  FOOD_BUFF_GROUP_ORDER,
   FOOD_CARDS,
   isFoodCardChecked,
   toggleFoodCard,
   type FoodBuffSelection,
 } from '../../domain/foodBuffs'
+import { BuffGroupSection } from './BuffGroupSection'
 import { BuffToggleCard } from './BuffToggleCard'
 import { useFoodBuffCatalog } from './useBuffCatalog'
 
@@ -18,31 +20,31 @@ export function FoodBuffGrid({ value, onChange }: FoodBuffGridProps) {
 
   return (
     <Box>
-      <Typography variant="subtitle2" sx={{ mb: 0.75, fontWeight: 600 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
         Food
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: 0.75,
-          alignItems: 'flex-start',
-        }}
-      >
-        {FOOD_CARDS.map((card) => {
-          const meta = byId.get(card.id)
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+        {FOOD_BUFF_GROUP_ORDER.map((group) => {
+          const cards = FOOD_CARDS.filter((c) => c.group === group)
+          if (cards.length === 0) return null
           return (
-            <BuffToggleCard
-              key={card.id}
-              label={meta?.name ?? card.label}
-              abbr={card.abbr}
-              badge={meta?.stat ?? card.percent}
-              iconUrl={meta?.icon}
-              checked={isFoodCardChecked(value, card)}
-              onToggle={() => onChange(toggleFoodCard(value, card))}
-              accent="primary"
-            />
+            <BuffGroupSection key={group} title={group}>
+              {cards.map((card) => {
+                const meta = byId.get(card.id)
+                return (
+                  <BuffToggleCard
+                    key={card.id}
+                    label={meta?.name ?? card.label}
+                    abbr={card.abbr}
+                    statLabel={card.statLabel}
+                    iconUrl={meta?.icon}
+                    checked={isFoodCardChecked(value, card)}
+                    onToggle={() => onChange(toggleFoodCard(value, card))}
+                    accent="primary"
+                  />
+                )
+              })}
+            </BuffGroupSection>
           )
         })}
       </Box>

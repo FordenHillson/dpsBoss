@@ -1,7 +1,7 @@
 [
   {
     "id": "advanceBlessing",
-    "name": "Advance Blessing",
+    "name": "Advanced Blessing",
     "stat": 35,
     "icon": "/buffs/icons/advanceBlessing.png"
   },
@@ -13,7 +13,7 @@
   },
   {
     "id": "unmanagedAnger",
-    "name": "Unmanaged Anger",
+    "name": "Unmanaged Anger (Hero)",
     "stat": 21,
     "icon": "/buffs/icons/unmanagedAnger.png"
   },

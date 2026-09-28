@@ -12,8 +12,6 @@ export interface FoodBuffSelection {
   porkSnail: boolean
   bossRush: boolean
   fever: boolean
-  /** Sheet: Node IED (1=yes) — multiplicative +15% IED */
-  nodeIed: boolean
   /** Sheet: DS4 Active — multiplicative +25% IED */
   defenseSmash4: boolean
 }
@@ -29,7 +27,6 @@ export const DEFAULT_FOOD_BUFFS: FoodBuffSelection = {
   porkSnail: false,
   bossRush: false,
   fever: false,
-  nodeIed: false,
   defenseSmash4: false,
 }
 
@@ -42,44 +39,149 @@ export type ToggleFoodId =
   | 'porkSnail'
   | 'bossRush'
   | 'fever'
-  | 'nodeIed'
   | 'defenseSmash4'
+
+export type FoodBuffGroup =
+  | 'PHY / MAG ATK'
+  | 'PHY / MAG DMG'
+  | 'Boss Atk'
+  | 'Crit Rate'
+  | 'Crit Dmg'
+  | 'Fever'
+  | 'IED'
 
 export interface FoodCardDef {
   id: string
   label: string
   abbr: string
   kind: 'bossAtkFood' | 'physMaAtkFood' | ToggleFoodId
+  group: FoodBuffGroup
+  /** Display chip, e.g. "+30%" */
+  statLabel: string
   /** For percent picks only */
   percent?: 30 | 50
 }
 
 /** Card definitions for UI (icons filled in later via abbr placeholder). */
 export const FOOD_CARDS: FoodCardDef[] = [
-  { id: 'bossAtk30', label: 'Boss Atk food 30%', abbr: 'BA30', kind: 'bossAtkFood', percent: 30 },
-  { id: 'bossAtk50', label: 'Boss Atk food 50%', abbr: 'BA50', kind: 'bossAtkFood', percent: 50 },
-  { id: 'physAtk30', label: 'Phys/MA Atk food 30%', abbr: 'PA30', kind: 'physMaAtkFood', percent: 30 },
-  { id: 'physAtk50', label: 'Phys/MA Atk food 50%', abbr: 'PA50', kind: 'physMaAtkFood', percent: 50 },
-  { id: 'candyBasket', label: 'Candy Basket / Cane', abbr: 'Candy', kind: 'candyBasket' },
-  { id: 'chestnut', label: 'Chestnut', abbr: 'Chest', kind: 'chestnut' },
-  { id: 'carrotJuice', label: 'Carrot Juice', abbr: 'Carrot', kind: 'carrotJuice' },
-  { id: 'noodleSoup', label: 'Noodle Soup', abbr: 'Noodle', kind: 'noodleSoup' },
-  { id: 'jellyfish', label: 'Jellyfish', abbr: 'Jelly', kind: 'jellyfish' },
-  { id: 'porkSnail', label: 'Pork / Snail', abbr: 'Pork', kind: 'porkSnail' },
-  { id: 'bossRush', label: 'Boss Rush', abbr: 'Rush', kind: 'bossRush' },
-  { id: 'fever', label: 'Fever (maxed)', abbr: 'Fever', kind: 'fever' },
   {
-    id: 'nodeIed',
-    label: 'Node IED (skill node Lv.40+)',
-    abbr: 'Node',
-    kind: 'nodeIed',
+    id: 'physAtk30',
+    label: 'Phys/MA Atk food 30%',
+    abbr: 'PA30',
+    kind: 'physMaAtkFood',
+    group: 'PHY / MAG ATK',
+    statLabel: '+30%',
+    percent: 30,
+  },
+  {
+    id: 'physAtk50',
+    label: 'Phys/MA Atk food 50%',
+    abbr: 'PA50',
+    kind: 'physMaAtkFood',
+    group: 'PHY / MAG ATK',
+    statLabel: '+50%',
+    percent: 50,
+  },
+  {
+    id: 'candyBasket',
+    label: 'Candy Basket / Cane',
+    abbr: 'Candy',
+    kind: 'candyBasket',
+    group: 'PHY / MAG DMG',
+    statLabel: '+30%',
+  },
+  {
+    id: 'porkSnail',
+    label: 'Pork / Snail',
+    abbr: 'Pork',
+    kind: 'porkSnail',
+    group: 'PHY / MAG DMG',
+    statLabel: '+20%',
+  },
+  {
+    id: 'bossAtk30',
+    label: 'Boss Atk food 30%',
+    abbr: 'BA30',
+    kind: 'bossAtkFood',
+    group: 'Boss Atk',
+    statLabel: '+30%',
+    percent: 30,
+  },
+  {
+    id: 'bossAtk50',
+    label: 'Boss Atk food 50%',
+    abbr: 'BA50',
+    kind: 'bossAtkFood',
+    group: 'Boss Atk',
+    statLabel: '+50%',
+    percent: 50,
+  },
+  {
+    id: 'jellyfish',
+    label: 'Jellyfish',
+    abbr: 'Jelly',
+    kind: 'jellyfish',
+    group: 'Boss Atk',
+    statLabel: '+20%',
+  },
+  {
+    id: 'bossRush',
+    label: 'Boss Rush',
+    abbr: 'Rush',
+    kind: 'bossRush',
+    group: 'Boss Atk',
+    statLabel: '+50%',
+  },
+  {
+    id: 'carrotJuice',
+    label: 'Carrot Juice',
+    abbr: 'Carrot',
+    kind: 'carrotJuice',
+    group: 'Crit Rate',
+    statLabel: '+30%',
+  },
+  {
+    id: 'noodleSoup',
+    label: 'Noodle Soup',
+    abbr: 'Noodle',
+    kind: 'noodleSoup',
+    group: 'Crit Rate',
+    statLabel: '+20%',
+  },
+  {
+    id: 'chestnut',
+    label: 'Chestnut',
+    abbr: 'Chest',
+    kind: 'chestnut',
+    group: 'Crit Dmg',
+    statLabel: '+30%',
+  },
+  {
+    id: 'fever',
+    label: 'Fever (maxed)',
+    abbr: 'Fever',
+    kind: 'fever',
+    group: 'Fever',
+    statLabel: 'ATK+10 · CR+10 · CD+20',
   },
   {
     id: 'defenseSmash4',
     label: 'Node Defense Smash 4',
     abbr: 'DS4',
     kind: 'defenseSmash4',
+    group: 'IED',
+    statLabel: '+25%',
   },
+]
+
+export const FOOD_BUFF_GROUP_ORDER: FoodBuffGroup[] = [
+  'PHY / MAG ATK',
+  'PHY / MAG DMG',
+  'Boss Atk',
+  'Crit Rate',
+  'Crit Dmg',
+  'Fever',
+  'IED',
 ]
 
 export function isFoodCardChecked(
@@ -154,7 +256,6 @@ export function stackIedPercent(
 /** Extra IED fractions from node/skill buff cards (not additive food %). */
 export function foodIedExtras(food: FoodBuffSelection): number[] {
   const extras: number[] = []
-  if (food.nodeIed) extras.push(0.15)
   if (food.defenseSmash4) extras.push(0.25)
   return extras
 }

@@ -72,12 +72,6 @@
     "icon": "/buffs/icons/fever.png"
   },
   {
-    "id": "nodeIed",
-    "name": "Node IED (skill node Lv.40+)",
-    "stat": 15,
-    "icon": "/buffs/icons/nodeIed.png"
-  },
-  {
     "id": "defenseSmash4",
     "name": "Node Defense Smash 4",
     "stat": 25,
