@@ -251,11 +251,7 @@ export default function App() {
           >
             <FoodBuffGrid value={food} onChange={setFood} />
             <PartyBuffGrid value={party} onChange={setParty} />
-            <SpecialBuffGrid
-              value={special}
-              onChange={setSpecial}
-              flatAtk={base.atk}
-            />
+            <SpecialBuffGrid value={special} onChange={setSpecial} />
           </Paper>
         </Box>
       </Box>

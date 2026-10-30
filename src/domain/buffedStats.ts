@@ -44,13 +44,13 @@ export function computeBuffedStats(
   food: FoodBuffSelection,
   hyper: HyperSkill,
   party: PartyBuffSelection,
-  special: SpecialBuffSelection = { divineEcho: false },
+  special: SpecialBuffSelection = { divineEcho: false, paladinFlatAtk: 0 },
   afScCatalog: AfScBonusCatalog | null = null,
   afSc: AfScSelection = { baseKey: '', tierId: '' },
 ): BuffedStats {
   const foodD = foodStatDeltas(food)
   const partyD = partyStatDeltas(party)
-  const specialD = specialStatDeltas(special, base.atk)
+  const specialD = specialStatDeltas(special)
   const afScD = afScStatDeltas(afScCatalog, afSc)
   const iedExtras = [
     ...foodIedExtras(food),

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   divineEchoFinalDmgBonus,
   divineEchoStatLabel,
+  setPaladinFlatAtk,
   specialStatDeltas,
 } from './specialBuffs'
 
@@ -25,14 +26,18 @@ describe('divineEchoFinalDmgBonus', () => {
 
 describe('specialStatDeltas', () => {
   it('returns zeros when Divine Echo off', () => {
-    expect(specialStatDeltas({ divineEcho: false }, 50_000)).toEqual({
+    expect(
+      specialStatDeltas({ divineEcho: false, paladinFlatAtk: 50_000 }),
+    ).toEqual({
       dmgPercent: 0,
       finalDmgPercent: 0,
     })
   })
 
-  it('applies Additional DMG 90% and scaled Final DMG', () => {
-    expect(specialStatDeltas({ divineEcho: true }, 30_000)).toEqual({
+  it('uses Paladin caster flat ATK for Final DMG scale', () => {
+    expect(
+      specialStatDeltas({ divineEcho: true, paladinFlatAtk: 30_000 }),
+    ).toEqual({
       dmgPercent: 90,
       finalDmgPercent: 20,
     })
@@ -40,5 +45,18 @@ describe('specialStatDeltas', () => {
 
   it('builds a readable chip label', () => {
     expect(divineEchoStatLabel(30_000)).toBe('Add+90 · FD+20')
+  })
+})
+
+describe('setPaladinFlatAtk', () => {
+  it('clamps invalid values to 0', () => {
+    expect(
+      setPaladinFlatAtk({ divineEcho: true, paladinFlatAtk: 10 }, -5)
+        .paladinFlatAtk,
+    ).toBe(0)
+    expect(
+      setPaladinFlatAtk({ divineEcho: true, paladinFlatAtk: 10 }, Number.NaN)
+        .paladinFlatAtk,
+    ).toBe(0)
   })
 })

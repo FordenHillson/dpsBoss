@@ -125,17 +125,17 @@ describe('computeBuffedStats', () => {
     expect(buffed.critDmgPercent).toBeCloseTo(533.2 + 30, 5)
   })
 
-  it('applies Divine Echo Additional DMG and scaled Final DMG', () => {
+  it('applies Divine Echo from Paladin caster ATK, not self ATK', () => {
     const buffed = computeBuffedStats(
       base,
       DEFAULT_FOOD_BUFFS,
       DEFAULT_HYPER_SKILL,
       DEFAULT_PARTY_BUFFS,
-      { divineEcho: true },
+      { divineEcho: true, paladinFlatAtk: 30_000 },
     )
-    // flat ATK 73562 → floor(73562/3000)=24 → capped scale 20 → FD +30
+    // self atk 73562 unused; caster 30000 → FD +20
     expect(buffed.dmgPercent).toBeCloseTo(191.3 + 90, 5)
-    expect(buffed.finalDmgPercent).toBeCloseTo(93 + 30, 5)
+    expect(buffed.finalDmgPercent).toBeCloseTo(93 + 20, 5)
   })
 
   it('subtracts Crit Res from Crit Rate', () => {
